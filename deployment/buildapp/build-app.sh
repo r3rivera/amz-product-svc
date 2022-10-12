@@ -34,7 +34,7 @@ echo ""
 echo "Start Building the Docker Image"
 docker --version
 
-
+echo "Current Directory is $(pwd)"
 
 
 
