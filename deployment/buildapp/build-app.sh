@@ -25,12 +25,8 @@ echo "Build Time   :: ${BUILD_TIME}"
 echo "Git Commit   :: ${GIT_COMMITID}"
 echo ""
 echo ""
-S3_BUCKET=$1
-S3_BUCKET_PREFIX=$2
-echo "S3 Bucket    :: ${S3_BUCKET}"
-echo "S3 Prefix    :: ${S3_BUCKET_PREFIX}"
-echo ""
-echo ""
+echo "Starting the application build..."
+mvn clean install
 
 
 # if [[ ${APP_NAME} == "" ]]
