@@ -7,8 +7,8 @@ pipeline {
                 echo "Building R3APP"
                 echo "CURRENT WORKSPACE       ::: ${WORKSPACE}"
 
-                sh "chmod +x ./build/app/build-config.sh"
-                sh "./build/app/build-config.sh"
+                sh "chmod +x ./deployment/build/build-app.sh"
+                sh "./deployment/build/build-app.sh"
             }
         }
         stage('Local Docker Deploy') {
