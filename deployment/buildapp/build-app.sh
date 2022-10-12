@@ -25,8 +25,16 @@ echo "Build Time   :: ${BUILD_TIME}"
 echo "Git Commit   :: ${GIT_COMMITID}"
 echo ""
 echo ""
-echo "Starting the application build..."
+echo "Start compiling the application"
 mvn clean install
+JAR_FILE="$(find ./target/*.jar | head -n 1 | cut -d '/' -f 3)"
+echo "Compilation Complete :: JAR File is ${JAR_FILE}"
+echo ""
+echo ""
+echo "Start Building the Docker Image"
+docker --version
+
+
 
 
 # if [[ ${APP_NAME} == "" ]]
