@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps{
+                echo "Building R3APP"
+                echo "CURRENT WORKSPACE       ::: ${WORKSPACE}"
+
+                sh "chmod +x ./build/app/build-config.sh"
+                sh "./build/app/build-config.sh"
+            }
+        }
+        stage('Local Docker Deploy') {
+            steps{
+                echo 'Testing DEV R3APP'
+                // sh "./deploy/deploy-app.sh dev"
+
+            }
+        }
+        stage('Production Deploy') {
+            steps{
+                echo 'Deploying Production R3APP'
+            }
+        }
+
+    }
+}
