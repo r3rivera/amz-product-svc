@@ -1,4 +1,4 @@
-#!bin/bash
+#!/usr/bin/env bash
 echo "## Building the configuration of ${APP_NAME}..."
 echo "## Workspace is ${WORKSPACE}"
 echo "############## START ::: BUILD INFORMATION ##############"
