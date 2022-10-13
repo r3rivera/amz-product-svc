@@ -38,7 +38,7 @@ echo "Current Directory is $(pwd)"
 echo ""
 echo "Start Creating Docker Image"
 chmod +x ./deployment/buildapp/Dockerfile
-docker build -f ./deployment/buildapp/Dockerfile -t ${BUILD_NUMBER} --build-arg jar_name=${JAR_FILE}
+docker build -t ${BUILD_NUMBER} --build-arg jar_name=${JAR_FILE} -f ./deployment/buildapp/Dockerfile .
 echo "Done Creating Docker Image"
 
 
