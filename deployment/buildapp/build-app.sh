@@ -35,8 +35,12 @@ echo "Start Building the Docker Image"
 docker --version
 
 echo "Current Directory is $(pwd)"
-# docker build -t ${BUILD_NUMBER} --build-arg build_number=${BUILD_NUMBER} jar_name=
+echo ""
+echo "Start Creating Docker Image"
+docker build -t ${BUILD_NUMBER} --build-arg jar_name=${JAR_FILE}
+echo "Done Creating Docker Image"
 
+docker image ls -a
 
 
 # if [[ ${APP_NAME} == "" ]]
