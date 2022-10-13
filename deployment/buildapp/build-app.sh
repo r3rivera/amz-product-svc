@@ -31,16 +31,15 @@ JAR_FILE="$(find ./target/*.jar | head -n 1 | cut -d '/' -f 3)"
 echo "Compilation Complete :: JAR File is ${JAR_FILE}"
 echo ""
 echo ""
-echo "Start Building the Docker Image"
+echo "Current Docker Version"
 docker --version
-
+echo ""
 echo "Current Directory is $(pwd)"
 echo ""
 echo "Start Creating Docker Image"
-docker build -t ${BUILD_NUMBER} --build-arg jar_name=${JAR_FILE}
+chmod chmod +x ./deployment/buildapp/Dockerfile
+docker build -t ${BUILD_NUMBER} --build-arg jar_name=${JAR_FILE} -f ./deployment/buildapp/Dockerfile
 echo "Done Creating Docker Image"
-
-docker image ls -a
 
 
 # if [[ ${APP_NAME} == "" ]]
