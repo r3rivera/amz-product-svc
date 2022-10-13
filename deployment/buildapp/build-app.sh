@@ -39,7 +39,8 @@ echo "Current User is $USER"
 echo ""
 echo "Start Creating Docker Image"
 chmod +x ./deployment/buildapp/Dockerfile
-docker build -t ${BUILD_NUMBER} --build-arg jar_name=${JAR_FILE} -f ./deployment/buildapp/Dockerfile .
+DOCKER_TAG="R3App:${BUILD_NUMBER}"
+docker build -t ${DOCKER_TAG} --build-arg jar_name=${JAR_FILE} -f ./deployment/buildapp/Dockerfile .
 echo "Done Creating Docker Image"
 
 
