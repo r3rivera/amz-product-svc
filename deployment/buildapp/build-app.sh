@@ -35,6 +35,7 @@ echo "Current Docker Version"
 docker --version
 echo ""
 echo "Current Directory is $(pwd)"
+echo "Current User is $USER"
 echo ""
 echo "Start Creating Docker Image"
 chmod +x ./deployment/buildapp/Dockerfile
