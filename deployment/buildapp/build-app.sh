@@ -35,6 +35,7 @@ echo "Start Building the Docker Image"
 docker --version
 
 echo "Current Directory is $(pwd)"
+# docker build -t ${BUILD_NUMBER} --build-arg build_number=${BUILD_NUMBER} jar_name=
 
 
 
