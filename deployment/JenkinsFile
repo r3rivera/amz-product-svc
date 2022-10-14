@@ -1,8 +1,8 @@
 pipeline {
-    agent any
-
+    agent none
     stages {
         stage('Build') {
+            agent any
             steps{
                 echo "Building R3APP"
                 echo "CURRENT WORKSPACE       ::: ${WORKSPACE}"
@@ -12,9 +12,11 @@ pipeline {
             }
         }
         stage('Local Docker Deploy') {
+            agent any
             steps{
-                echo 'Testing DEV R3APP'
-                // sh "./deploy/deploy-app.sh dev"
+                input(message: 'Deploy to docker', ok : 'Deploy')
+                sh "chmod +x ./deployment/buildapp/docker-local-deploy.sh"
+                sh "./deployment/buildapp/docker-local-deploy.sh"
 
             }
         }
