@@ -25,7 +25,9 @@ DOCKER_CURR="$(docker image rm ${DOCKER_TAG})"
 echo "Removing existing docker images..."
 echo "Remove Status :: ${DOCKER_CURR}"
 
-docker build -t ${DOCKER_TAG} --build-arg jar_name=${JAR_FILE} -f ./deployment/buildapp/Dockerfile .
+GIT_COMMIT_LABEL="$(git log | head -n 1 | cut -d '/' -f 2)"
+
+docker build -t ${DOCKER_TAG} --build-arg jar_name=${JAR_FILE} git_commit=${GIT_COMMIT_LABEL} build_number=${BUILD_NUMBER} -f ./deployment/buildapp/Dockerfile .
 echo "Done Creating Docker Image"
 echo ""
 echo ""

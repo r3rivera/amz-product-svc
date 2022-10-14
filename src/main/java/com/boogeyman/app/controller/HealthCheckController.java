@@ -15,7 +15,7 @@ public class HealthCheckController {
     @GetMapping("/healthcheck")
     public ResponseEntity<String> getApp(){
         log.info("Getting the HealthCheck...");
-        return new ResponseEntity<>("Success Health", HttpStatus.OK);
+        return new ResponseEntity<>("Success Health!", HttpStatus.OK);
     }
 
 }
