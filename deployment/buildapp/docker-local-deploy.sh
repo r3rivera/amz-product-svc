@@ -29,3 +29,6 @@ docker build -t ${DOCKER_TAG} --build-arg jar_name=${JAR_FILE} -f ./deployment/b
 echo "Done Creating Docker Image"
 echo ""
 echo ""
+echo "Deploying a new docker container...."
+DOCKER_UUID="$(docker container run -d --name ${DOCKER_TAG} ${DOCKER_TAG} --port 8081:8081)"
+echo "New Docker ID deployed :: ${DOCKER_UUID}"
