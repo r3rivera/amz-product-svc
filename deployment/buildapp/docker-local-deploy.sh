@@ -13,9 +13,13 @@ echo "Start Creating Docker Image"
 chmod +x ./deployment/buildapp/Dockerfile
 DOCKER_TAG="r3app"
 
+echo "Stopping an existing docker container..."
+DOCKER_CTR_STOP="$(docker container stop ${DOCKER_TAG})"
+echo "Stop Status :: ${DOCKER_CTR_STOP}"
+
 DOCKER_CURR="$(docker image ls ${DOCKER_TAG})"
-echo "Existing docker images..."
-echo "${DOCKER_CURR}"
+echo "Removing existing docker images..."
+echo "Remove Status :: ${DOCKER_CURR}"
 
 docker build -t ${DOCKER_TAG} --build-arg jar_name=${JAR_FILE} -f ./deployment/buildapp/Dockerfile .
 echo "Done Creating Docker Image"
