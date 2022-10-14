@@ -11,10 +11,11 @@ echo "Current User is $USER"
 echo ""
 echo "Start Creating Docker Image"
 chmod +x ./deployment/buildapp/Dockerfile
-DOCKER_TAG="r3app-${BUILD_NUMBER}"
+DOCKER_TAG="r3app"
 
-DOCKER_CURR="$(docker container ls -a | head -n 1)"
-echo "Current running containers are ${DOCKER_CURR}"
+DOCKER_CURR="$(docker image ls ${DOCKER_TAG})"
+echo "Existing docker images..."
+echo "${DOCKER_CURR}"
 
 docker build -t ${DOCKER_TAG} --build-arg jar_name=${JAR_FILE} -f ./deployment/buildapp/Dockerfile .
 echo "Done Creating Docker Image"
