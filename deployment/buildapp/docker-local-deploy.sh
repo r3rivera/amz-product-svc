@@ -27,8 +27,12 @@ echo "Remove Status :: ${DOCKER_CURR}"
 
 GIT_COMMIT_LABEL="$(git log | head -n 1 | cut -d '/' -f 2)"
 
-docker build -t ${DOCKER_TAG} --build-arg jar_name=${JAR_FILE} \
---build-arg git_commit=${GIT_COMMIT_LABEL} --build-arg build_number=${BUILD_NUMBER} -f ./deployment/buildapp/Dockerfile .
+docker build \
+  -t ${DOCKER_TAG} \
+  --build-arg jar_name=${JAR_FILE} \
+  --build-arg git_commit=${GIT_COMMIT_LABEL} \
+  --build-arg build_number=${BUILD_NUMBER} \
+  --no-cache -f ./deployment/buildapp/Dockerfile .
 echo "Done Creating Docker Image"
 echo ""
 echo ""
