@@ -12,7 +12,6 @@ pipeline {
         }
         stage('Local Docker Deploy') {
             steps{
-                # input(message: 'Deploy to docker', ok : 'Deploy')
                 sh "chmod +x ./deployment/buildapp/docker-local-deploy.sh"
                 sh "./deployment/buildapp/docker-local-deploy.sh"
 
