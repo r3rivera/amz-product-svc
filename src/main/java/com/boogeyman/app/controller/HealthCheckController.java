@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/app")
-public class ApiController {
+public class HealthCheckController {
 
-    @GetMapping("")
+    @GetMapping("/healthcheck")
     public ResponseEntity<String> getApp(){
-        log.info("Getting the App...");
-        return new ResponseEntity<>("Success Chat", HttpStatus.OK);
+        log.info("Getting the HealthCheck...");
+        return new ResponseEntity<>("Success Health", HttpStatus.OK);
     }
 
 }
