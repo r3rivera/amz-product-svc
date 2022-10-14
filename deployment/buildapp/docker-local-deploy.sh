@@ -14,10 +14,14 @@ chmod +x ./deployment/buildapp/Dockerfile
 DOCKER_TAG="r3app"
 
 echo "Stopping an existing docker container..."
-DOCKER_CTR_STOP="$(docker container stop ${DOCKER_TAG})"
+DOCKER_CTR_STOP="$(docker container stop ${DOCKER_TAG} | cut -d ':' -f 2)"
 echo "Stop Status :: ${DOCKER_CTR_STOP}"
 
-DOCKER_CURR="$(docker image ls ${DOCKER_TAG})"
+echo "Removing stopped container..."
+DOCKER_CTR_RM="$(docker container rm ${DOCKER_TAG})"
+echo "Remove Status :: ${DOCKER_CTR_RM}"
+
+DOCKER_CURR="$(docker image rm ${DOCKER_TAG})"
 echo "Removing existing docker images..."
 echo "Remove Status :: ${DOCKER_CURR}"
 
