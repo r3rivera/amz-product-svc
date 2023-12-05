@@ -28,5 +28,10 @@ echo ""
 echo "Start compiling the application"
 mvn clean package
 JAR_FILE="$(find ./target/*.jar | head -n 1 | cut -d '/' -f 3)"
-echo "Compilation Complete :: JAR File is ${JAR_FILE}"
+if [ -z "$JAR_FILE" ]; then
+  echo "NO JAR FILE Created! Build FAILED!"
+  exit 1
+else
+  echo "Compilation Complete :: JAR File is ${JAR_FILE}"
+fi
 echo "############## END   ::: BUILD INFORMATION ##############"
