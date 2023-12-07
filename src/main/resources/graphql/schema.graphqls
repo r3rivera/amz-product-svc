@@ -2,6 +2,7 @@ type Query {
     greetings: String!
     productById: Product
     userProfile: UserProfile!
+    userContactInfo: UserProfile!
 }
 
 type Product {
@@ -18,13 +19,13 @@ type UserProfile {
     firstName: String
     lastName: String
     homeAddress: Address
-    contactInfo: ContactInfo
+    email: ContactInfo
+    phone: ContactInfo
 }
 
 type ContactInfo{
     category: String
-    areaCode: String
-    phoneNumber: String
+    contactValue: String
 }
 
 type Address {

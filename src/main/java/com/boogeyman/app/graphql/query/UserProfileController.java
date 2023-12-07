@@ -1,7 +1,7 @@
 package com.boogeyman.app.graphql.query;
 
 
-import com.boogeyman.app.model.UserProfile;
+import com.boogeyman.app.graphql.models.UserProfile;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
