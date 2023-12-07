@@ -3,6 +3,7 @@ type Query {
     productById: Product
     userProfile: UserProfile!
     userContactInfo: UserProfile!
+    userProfileList(filterBy: ProfileFilter): [UserProfile]
 }
 
 type Product {
@@ -14,13 +15,28 @@ type Product {
     quantity: Int
 }
 
-type UserProfile {
+interface Profile {
     id: ID
     firstName: String
     lastName: String
     homeAddress: Address
     email: ContactInfo
     phone: ContactInfo
+}
+
+type UserProfile implements Profile{
+    id: ID
+    firstName: String
+    lastName: String
+    homeAddress: Address
+    email: ContactInfo
+    phone: ContactInfo
+}
+
+input ProfileFilter {
+    id: ID
+    firstName: String
+    lastName: String
 }
 
 type ContactInfo{
@@ -36,3 +52,5 @@ type Address {
     zip: String
     country: String
 }
+
+

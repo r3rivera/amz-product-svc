@@ -5,7 +5,7 @@ pipeline {
             steps{
                 echo "Building R3APP"
                 echo "CURRENT WORKSPACE       ::: ${WORKSPACE}"
-
+                sh "dos2unix ./deployment/buildapp/*.sh"
                 sh "chmod +x ./deployment/buildapp/build-app.sh"
                 sh "./deployment/buildapp/build-app.sh"
             }
