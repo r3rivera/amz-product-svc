@@ -39,10 +39,10 @@ input UserProfileEmailRequest{
 }
 
 input ProfileFilter {
-    id: ID
-    userName: String
-    firstName: String
-    lastName: String
+    id: [ID]
+    userName: [String]
+    firstName: [String]
+    lastName: [String]
 }
 
 type ContactInfo{

@@ -1,12 +1,11 @@
 package com.boogeyman.app.service;
 
 import com.boogeyman.app.graphql.models.*;
+import graphql.language.ArrayValue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -32,6 +31,13 @@ public class UserProfileService {
             return tempStore.get(userId);
         }
         return null;
+    }
+
+    public List<UserProfile> getUsers(UserProfileFilter filter){
+        if(filter == null){
+            return tempStore.values().stream().toList();
+        }
+        return new ArrayList<>();
     }
 
 }
