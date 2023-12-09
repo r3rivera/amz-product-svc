@@ -1,31 +1,24 @@
 type Query {
-    greetings: String!
-    productById: Product
     userProfile: UserProfile!
-    userContactInfo: UserProfile!
     userProfileList(filterBy: ProfileFilter): [UserProfile]
+    userProfileBy(id : String): UserProfile
+}
+type Mutation{
+    createUser(user: UserProfileRequest!): Profile
+    createUserEmail(request: UserProfileEmailRequest!): Profile
 }
 
-type Product {
-    id: ID
-    name: String
-    brand: String
-    description: String
-    amount: Float
-    quantity: Int
-}
 
 interface Profile {
     id: ID
+    userName: String
     firstName: String
     lastName: String
-    homeAddress: Address
-    email: ContactInfo
-    phone: ContactInfo
 }
 
 type UserProfile implements Profile{
     id: ID
+    userName: String
     firstName: String
     lastName: String
     homeAddress: Address
@@ -33,8 +26,21 @@ type UserProfile implements Profile{
     phone: ContactInfo
 }
 
+input UserProfileRequest {
+    userName: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+}
+
+input UserProfileEmailRequest{
+    profile: UserProfileRequest!
+    email: String!
+}
+
 input ProfileFilter {
     id: ID
+    userName: String
     firstName: String
     lastName: String
 }
