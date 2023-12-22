@@ -1,7 +1,9 @@
 package com.boogeyman.app.service;
 
 import com.boogeyman.app.graphql.models.*;
-import graphql.language.ArrayValue;
+import com.boogeyman.app.storage.entities.AppUserEntity;
+import com.boogeyman.app.storage.service.StorageService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -9,34 +11,37 @@ import java.util.*;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserProfileService {
 
-    private static Map<UUID, UserProfile> tempStore = new HashMap();
+    private final StorageService<AppUserEntity, Boolean> storageService;
 
     public UProfile createUserProfile(UserProfileRequest request, String email){
-        final ContactInfo contactInfo = new ContactInfo(UUID.randomUUID(), ContactType.EMAIL, email);
-        final UserProfile.UserProfileBuilder uProfile = UserProfile.builder();
-        uProfile.id(UUID.randomUUID())
-                .userName(request.getUserName())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(contactInfo);
-        final UserProfile u = uProfile.build();
-        tempStore.put(u.getId(), u);
+        final AppUserEntity entity = new AppUserEntity();
+        entity.setUserName(request.getUserName());
+        entity.setFirstName(request.getFirstName());
+        entity.setLastName(request.getLastName());
+
+        final boolean result = storageService.createRecord(entity);
+        UserProfile u = null;
+        if(result){
+            final ContactInfo contactInfo = new ContactInfo(UUID.randomUUID(), ContactType.EMAIL, email);
+            UserProfile.UserProfileBuilder uProfile = UserProfile.builder();
+            uProfile.id(UUID.randomUUID())
+                    .userName(request.getUserName())
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .email(contactInfo);
+            u = uProfile.build();
+        }
         return u;
     }
 
     public UserProfile getUserProfile(UUID userId){
-        if(tempStore.containsKey(userId)){
-            return tempStore.get(userId);
-        }
         return null;
     }
 
     public List<UserProfile> getUsers(UserProfileFilter filter){
-        if(filter == null){
-            return tempStore.values().stream().toList();
-        }
         return new ArrayList<>();
     }
 
