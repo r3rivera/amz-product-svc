@@ -14,8 +14,11 @@ public class AppSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authz) -> authz.anyRequest().authenticated())
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/api/manage/**")
+                        .permitAll())
                 .httpBasic(withDefaults());
+
+
         return http.build();
     }
 
