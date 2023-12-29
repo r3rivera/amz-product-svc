@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -38,7 +39,6 @@ public class AppSecurityConfiguration {
     RSAPublicKey pubKey;
     @Value("${app.jwt.private.key}")
     RSAPrivateKey pvtKey;
-
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -67,12 +67,14 @@ public class AppSecurityConfiguration {
         return new NimbusJwtEncoder(jwks);
     }
 
-    /*
+    /**
+     * This defines the API that DOES NOT require any authentications.
+     * @return
+     */
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/app/**").anyRequest();
+        return (web) -> web.ignoring().requestMatchers("/api/app/**");
     }
-    */
 
     @Bean
     UserDetailsService userDetailsService() throws Exception {

@@ -2,7 +2,6 @@ package com.boogeyman.app.storage.entities;
 
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
