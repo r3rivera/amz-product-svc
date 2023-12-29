@@ -10,8 +10,11 @@ public class ConfigProps {
 
     @Value("${release.name:None}")
     private String releaseName;
-
-    @Value(("${release.description:''}"))
+    @Value("${release.description:''}")
     private String releaseDescription;
+    @Value("${app.code:NAN}")
+    private String appCode;
+    @Value("${app.env:NAN}")
+    private String appEnv;
 
 }
