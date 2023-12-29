@@ -5,9 +5,13 @@ import com.boogeyman.app.model.AccountUserRequest;
 import com.boogeyman.app.model.AccountUserResult;
 import com.boogeyman.app.storage.entities.AccountEntity;
 import com.boogeyman.app.storage.entities.AccountUserEntity;
+import com.boogeyman.app.storage.entities.AccountUserRoleEntity;
 import com.boogeyman.app.storage.exceptions.DataStoreException;
+import com.boogeyman.app.storage.exceptions.UserDataExistException;
 import com.boogeyman.app.storage.service.AccountEntityStorageService;
 import com.boogeyman.app.storage.service.AccountUserEntityStorageService;
+import com.boogeyman.app.storage.service.AccountUserRoleEntityStorageService;
+import com.boogeyman.app.types.AcctRoleTypes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,13 +29,19 @@ public class UserAccountService {
 
     private final AccountEntityStorageService entityStorageService;
     private final AccountUserEntityStorageService userEntityStorageService;
+    private final AccountUserRoleEntityStorageService userRoleEntityStorageService;
 
     public UUID createUserAccount(AccountUserRequest request){
+
+        final AccountEntity existUser = entityStorageService.getRecordByEmail(request.getEmail());
+        if(existUser != null){
+            log.error("User already exist!");
+            throw new UserDataExistException();
+        }
 
         final AccountEntity accountEntity = new AccountEntity();
         accountEntity.setEmail(request.getEmail());
         accountEntity.setPassword(request.getPassword());
-
 
         final UUID acctId = entityStorageService.createRecord(accountEntity);
         final AccountUserEntity accountUserEntity = new AccountUserEntity();
@@ -39,8 +49,13 @@ public class UserAccountService {
         accountUserEntity.setFirstName(request.getFirstName());
         accountUserEntity.setLastName(request.getLastName());
 
+        final AccountUserRoleEntity roleEntity = new AccountUserRoleEntity();
+        roleEntity.setAcctId(acctId);
+        roleEntity.setRoleName(AcctRoleTypes.GENERIC_USER.name());
+
+        final UUID acctRoleId = userRoleEntityStorageService.createRecord(roleEntity);
         final UUID acctUserId = userEntityStorageService.createRecord(accountUserEntity);
-        if(acctUserId == null){
+        if(acctUserId == null || acctRoleId == null){
             log.error("Unable to create the record!");
             throw new DataStoreException("Error with record!");
         }
