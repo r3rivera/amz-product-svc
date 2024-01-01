@@ -2,7 +2,6 @@ package com.boogeyman.app.storage.service;
 
 import com.boogeyman.app.storage.entities.AccountUserEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
