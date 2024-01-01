@@ -14,6 +14,7 @@ import com.boogeyman.app.storage.service.AccountUserRoleEntityStorageService;
 import com.boogeyman.app.types.AcctRoleTypes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ import java.util.UUID;
 @Transactional(transactionManager = "AppDBTxnManager")
 public class UserAccountService {
 
+    private final PasswordEncoder encoder;
     private final AccountEntityStorageService entityStorageService;
     private final AccountUserEntityStorageService userEntityStorageService;
     private final AccountUserRoleEntityStorageService userRoleEntityStorageService;
@@ -41,7 +43,7 @@ public class UserAccountService {
 
         final AccountEntity accountEntity = new AccountEntity();
         accountEntity.setEmail(request.getEmail());
-        accountEntity.setPassword(request.getPassword());
+        accountEntity.setPassword(encoder.encode(request.getPassword()));
 
         final UUID acctId = entityStorageService.createRecord(accountEntity);
         final AccountUserEntity accountUserEntity = new AccountUserEntity();

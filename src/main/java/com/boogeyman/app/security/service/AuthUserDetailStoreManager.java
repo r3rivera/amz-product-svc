@@ -3,14 +3,12 @@ package com.boogeyman.app.security.service;
 import com.boogeyman.app.storage.entities.AccountEntity;
 import com.boogeyman.app.storage.entities.AccountUserAndRoleEntity;
 import com.boogeyman.app.storage.service.AccountEntityStorageService;
-
 import com.boogeyman.app.storage.service.AccountUserRoleStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AuthUserDetailStoreManager implements UserDetailsManager {
 
-    private final PasswordEncoder encoder;
     private final AccountEntityStorageService entityStorageService;
     private final AccountUserRoleStorageService userRoleStorageService;
 
@@ -62,7 +59,7 @@ public class AuthUserDetailStoreManager implements UserDetailsManager {
 
         final UserDetails acct = User.builder()
                 .username(user.accountEntity().getEmail())
-                .password(this.encoder.encode(user.accountEntity().getPassword()))
+                .password(user.accountEntity().getPassword())
                 .roles(user.roleEntity().toArray( new String[0]))
                 .accountExpired(false)
                 .accountLocked(user.accountEntity().isAcctLocked())

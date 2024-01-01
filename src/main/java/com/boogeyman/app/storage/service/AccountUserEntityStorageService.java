@@ -1,6 +1,8 @@
 package com.boogeyman.app.storage.service;
 
 import com.boogeyman.app.storage.entities.AccountUserEntity;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,16 +16,16 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
-public class AccountUserEntityStorageService extends JdbcStorageService<AccountUserEntity, UUID> {
+@RequiredArgsConstructor
+public class AccountUserEntityStorageService implements BaseStorageService{
 
     private static final String APP_ACCT_USER_STMT = "INSERT INTO APP_ACCT_USER(ACCT_ID, FIRST_NAME,LAST_NAME,CREATED_BY) VALUES (?,?,?,?)";
     private static final String APP_ACCT_USER_QRY = "SELECT ACCT_ID, FIRST_NAME, LAST_NAME FROM APP_ACCT_USER LIMIT ? OFFSET ?";
-    protected AccountUserEntityStorageService(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
-    }
 
-    @Override
+    private final JdbcTemplate jdbcTemplate;
+
     public UUID createRecord(AccountUserEntity entity) {
         final KeyHolder keyHolder = new GeneratedKeyHolder();
         this.jdbcTemplate.update(con -> {

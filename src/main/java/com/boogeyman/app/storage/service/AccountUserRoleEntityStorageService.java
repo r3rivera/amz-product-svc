@@ -1,6 +1,8 @@
 package com.boogeyman.app.storage.service;
 
 import com.boogeyman.app.storage.entities.AccountUserRoleEntity;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,18 +16,16 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
-public class AccountUserRoleEntityStorageService extends JdbcStorageService<AccountUserRoleEntity, UUID> {
+@RequiredArgsConstructor
+public class AccountUserRoleEntityStorageService implements BaseStorageService{
 
     private static final String CREATE_ACCT_ROLE_STMT = "INSERT INTO APP_ACCOUNT_ROLE(ACCT_ID, ROLE, CREATED_BY) VALUES (?,?,?)";
     private static final String GET_ROLES_BY_ACCT_ID = "SELECT ROLE FROM APP_ACCOUNT_ROLE WHERE ACCT_ID IN (?)";
 
+    private final JdbcTemplate jdbcTemplate;
 
-    protected AccountUserRoleEntityStorageService(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
-    }
-
-    @Override
     public UUID createRecord(AccountUserRoleEntity record) {
         final KeyHolder keyHolder = new GeneratedKeyHolder();
         this.jdbcTemplate.update(con -> {
