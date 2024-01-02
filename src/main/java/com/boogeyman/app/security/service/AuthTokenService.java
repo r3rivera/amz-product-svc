@@ -21,7 +21,7 @@ public class AuthTokenService {
 
     public String generateToken(String userName, String scopes){
         final Instant now = Instant.now();
-        final long expiration = 36000L;
+        final long expiration = 900L;
 
         final JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(appIssuer)

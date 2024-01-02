@@ -20,6 +20,7 @@ public class AuthUserDetailStoreManager implements UserDetailsManager {
     private final AccountEntityStorageService entityStorageService;
     private final AccountUserRoleStorageService userRoleStorageService;
 
+
     @Override
     public void createUser(UserDetails user) {
 

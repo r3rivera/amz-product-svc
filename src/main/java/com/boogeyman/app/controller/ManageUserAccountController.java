@@ -6,6 +6,7 @@ import com.boogeyman.app.service.UserAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,12 @@ public class ManageUserAccountController {
         if(list != null){
             return ResponseEntity.ok(list);
         }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/manage/users")
+    public ResponseEntity<UUID> updateUserRole(Authentication authentication){
+
         return ResponseEntity.noContent().build();
     }
 
