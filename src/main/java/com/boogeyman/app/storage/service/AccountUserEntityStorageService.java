@@ -24,6 +24,7 @@ public class AccountUserEntityStorageService implements BaseStorageService{
     private static final String APP_ACCT_USER_STMT = "INSERT INTO APP_ACCT_USER(ACCT_ID, FIRST_NAME,LAST_NAME,CREATED_BY) VALUES (?,?,?,?)";
     private static final String APP_ACCT_USER_QRY = "SELECT ACCT_ID, FIRST_NAME, LAST_NAME FROM APP_ACCT_USER LIMIT ? OFFSET ?";
 
+
     private final JdbcTemplate jdbcTemplate;
 
     public UUID createRecord(AccountUserEntity entity) {
@@ -47,6 +48,7 @@ public class AccountUserEntityStorageService implements BaseStorageService{
             ps.setObject(2, offset);
         }, new AcctUserRowMapper());
     }
+
 
     private static class AcctUserRowMapper implements RowMapper<AccountUserEntity>{
         @Override

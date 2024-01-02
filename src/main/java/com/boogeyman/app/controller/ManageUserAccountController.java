@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -39,10 +40,16 @@ public class ManageUserAccountController {
     }
 
     @PutMapping("/manage/users")
-    public ResponseEntity<UUID> updateUserRole(Authentication authentication){
-
+    public ResponseEntity updateUserPassword(Authentication authentication, @RequestBody UserPasswordUpdateRequest acctUserPassword){
+        this.userAccountService.updateUserPassword(authentication.getName(), acctUserPassword.newPassword());
+        return ResponseEntity.ok().build();
+    }
+    
+    public ResponseEntity updateUserRoles(Authentication authentication, @RequestBody AcctUserRoleUpdateRequest roleUpdateRequest){
         return ResponseEntity.noContent().build();
     }
 
+    record UserPasswordUpdateRequest(String newPassword){ }
+    record AcctUserRoleUpdateRequest(List<String> roles){}
 
 }

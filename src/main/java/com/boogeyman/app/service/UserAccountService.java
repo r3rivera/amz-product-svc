@@ -64,6 +64,28 @@ public class UserAccountService {
         return acctId;
     }
 
+    public void updateUserPassword(String userName, String newPassword){
+        final AccountEntity existUser = entityStorageService.getRecordByEmail(userName);
+        if(existUser == null){
+            log.error("User name does not exist for update password!");
+            throw new UserDataExistException();
+        }
+
+        if(encoder.matches(newPassword, existUser.getPassword())){
+            log.error("Password matches the old password!");
+            throw new DataStoreException("Old password matches with new one");
+        }else{
+            final String newPasswordEnc = encoder.encode(newPassword);
+            if(!entityStorageService.updateUserPassword(existUser.getAcctId(), userName, newPasswordEnc)){
+                throw new DataStoreException("Unable to update password");
+            }
+        }
+    }
+
+    public void updateUserRoles(String userName, List<String> roles){
+
+    }
+
     public AccountUserList getUserAccountList(int pageNum, int pageSize){
         final List<AccountUserEntity> userEntityList = userEntityStorageService.getAccountUsers(pageNum, pageSize);
         if(userEntityList.isEmpty()){

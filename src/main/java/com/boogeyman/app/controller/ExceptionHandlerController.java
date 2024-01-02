@@ -1,5 +1,6 @@
 package com.boogeyman.app.controller;
 
+import com.boogeyman.app.storage.exceptions.DataStoreException;
 import com.boogeyman.app.storage.exceptions.UserDataExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,12 @@ public class ExceptionHandlerController {
         return ResponseEntity.unprocessableEntity().build();
     }
 
+
+    @ExceptionHandler(DataStoreException.class)
+    public ResponseEntity handleDataError(){
+        log.error("Throwing DataStoreException");
+        return ResponseEntity.unprocessableEntity().build();
+    }
 
 
 }
