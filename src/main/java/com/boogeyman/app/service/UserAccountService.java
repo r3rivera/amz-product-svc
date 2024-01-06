@@ -35,7 +35,7 @@ public class UserAccountService {
 
     public UUID createUserAccount(AccountUserRequest request){
 
-        final AccountEntity existUser = entityStorageService.getRecordByEmail(request.getEmail());
+        final AccountEntity existUser = getUserAccount(request.getEmail());
         if(existUser != null){
             log.error("User already exist!");
             throw new UserDataExistException();
@@ -62,6 +62,10 @@ public class UserAccountService {
             throw new DataStoreException("Error with record!");
         }
         return acctId;
+    }
+
+    public AccountEntity getUserAccount(String email){
+        return entityStorageService.getRecordByEmail(email);
     }
 
     public void updateUserPassword(String userName, String newPassword){

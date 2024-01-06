@@ -1,61 +1,14 @@
 type Query {
-    userProfile: UserProfile!
-    userProfileList(filterBy: ProfileFilter): [UserProfile]
-    userProfileBy(id : String): UserProfile
-}
-type Mutation{
-    createUser(user: UserProfileRequest!): Profile
-    createUserEmail(request: UserProfileEmailRequest!): Profile
+    userProfileByUserName(userName: String):UserProfile
+    userProfile: UserProfile
 }
 
-interface Profile {
-    id: ID
+type UserProfile{
     userName: String
     firstName: String
     lastName: String
+    email: String
 }
 
-type UserProfile implements Profile{
-    id: ID
-    userName: String
-    firstName: String
-    lastName: String
-    homeAddress: Address
-    email: ContactInfo
-    phone: ContactInfo
-}
-
-input UserProfileRequest {
-    userName: String!
-    password: String!
-    firstName: String!
-    lastName: String!
-}
-
-input UserProfileEmailRequest{
-    profile: UserProfileRequest!
-    email: String!
-}
-
-input ProfileFilter {
-    id: [ID]
-    userName: [String]
-    firstName: [String]
-    lastName: [String]
-}
-
-type ContactInfo{
-    category: String
-    contactValue: String
-}
-
-type Address {
-    id: ID
-    street1: String
-    street2: String
-    city: String
-    zip: String
-    country: String
-}
 
 
