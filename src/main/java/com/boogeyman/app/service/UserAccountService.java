@@ -64,8 +64,13 @@ public class UserAccountService {
         return acctId;
     }
 
-    public AccountEntity getUserAccount(String email){
-        return entityStorageService.getRecordByEmail(email);
+    public AccountEntity getUserAccount(String userName){
+        return entityStorageService.getRecordByEmail(userName);
+    }
+
+
+    public AccountUserEntity getUserByAcctId(UUID acctId){
+        return this.userEntityStorageService.getAccountUserByAcctId(acctId);
     }
 
     public void updateUserPassword(String userName, String newPassword){

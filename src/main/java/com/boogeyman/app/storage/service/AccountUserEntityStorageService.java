@@ -23,6 +23,7 @@ public class AccountUserEntityStorageService implements BaseStorageService{
 
     private static final String APP_ACCT_USER_STMT = "INSERT INTO APP_ACCT_USER(ACCT_ID, FIRST_NAME,LAST_NAME,CREATED_BY) VALUES (?,?,?,?)";
     private static final String APP_ACCT_USER_QRY = "SELECT ACCT_ID, FIRST_NAME, LAST_NAME FROM APP_ACCT_USER LIMIT ? OFFSET ?";
+    private static final String APP_ACCT_USER_BY_ACCT_ID_QRY =  "SELECT ACCT_ID, FIRST_NAME, LAST_NAME FROM APP_ACCT_USER WHERE ACCT_ID = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -46,6 +47,18 @@ public class AccountUserEntityStorageService implements BaseStorageService{
             ps.setObject(1, pageSize);
             ps.setObject(2, offset);
         }, new AcctUserRowMapper());
+    }
+
+    public AccountUserEntity getAccountUserByAcctId(UUID acctId){
+        log.info("Querying DB based on the {} AcctID.", acctId);
+        final List<AccountUserEntity> users =  this.jdbcTemplate.query(APP_ACCT_USER_BY_ACCT_ID_QRY, ps -> {
+            ps.setObject(1, acctId);
+        }, new AcctUserRowMapper());
+        if(users.isEmpty()){
+            log.info("No record found for {} acctId!", acctId);
+            return null;
+        }
+        return users.get(0);
     }
 
 
