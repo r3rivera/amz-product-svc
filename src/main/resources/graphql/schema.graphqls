@@ -4,11 +4,17 @@ type Query {
 }
 
 type UserProfile{
-    userName: String
-    firstName: String
-    lastName: String
+    userName: String!
+    firstName: String!
+    lastName: String!
     email: String
 }
-
+type UserAddress{
+    street1: String!
+    street2: String
+    zip: String!
+    city: String!
+    country: String!
+}
 
 
