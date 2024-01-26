@@ -14,7 +14,6 @@ import com.boogeyman.app.storage.service.AccountUserRoleEntityStorageService;
 import com.boogeyman.app.types.AcctRoleTypes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,6 @@ import java.util.UUID;
 @Transactional(transactionManager = "AppDBTxnManager")
 public class UserAccountService {
 
-    private final CacheManager cacheManager;
     private final PasswordEncoder encoder;
     private final AccountEntityStorageService entityStorageService;
     private final AccountUserEntityStorageService userEntityStorageService;
@@ -74,11 +72,6 @@ public class UserAccountService {
 
     @Cacheable("user_profile")
     public AccountUserEntity getUserByAcctId(UUID acctId){
-        final AccountUserEntity entity = cacheManager.getCache("user_profile").get(acctId, AccountUserEntity.class);
-        if(entity != null){
-            log.info("Using the entity from the cache of user_profile!");
-            return entity;
-        }
         log.info("User_profile is null, Using the database.");
         return  this.userEntityStorageService.getAccountUserByAcctId(acctId);
     }

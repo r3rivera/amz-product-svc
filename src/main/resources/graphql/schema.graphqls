@@ -8,13 +8,22 @@ type UserProfile{
     firstName: String!
     lastName: String!
     email: String
-}
-type UserAddress{
-    street1: String!
-    street2: String
-    zip: String!
-    city: String!
-    country: String!
+    homeAddress: UserAddress
+    shippingAddress: UserAddress
+    workAddress: UserAddress
 }
 
+type UserAddress{
+    street1: String
+    street2: String
+    zip: String
+    city: String
+    country: String
+}
+
+enum AddressType{
+    RESIDENTIAL
+    SHIPPING
+    WORK
+}
 

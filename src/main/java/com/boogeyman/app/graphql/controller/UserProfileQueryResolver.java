@@ -1,7 +1,10 @@
 package com.boogeyman.app.graphql.controller;
 
+import com.boogeyman.app.graphql.models.UserAddress;
 import com.boogeyman.app.graphql.models.UserProfile;
+import com.boogeyman.app.graphql.models.types.AddressType;
 import com.boogeyman.app.service.UserAccountService;
+import graphql.execution.DataFetcherResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -31,4 +34,16 @@ public class UserProfileQueryResolver {
         log.info("Resolving email attribute!");
         return profile.getEmail();
     }
+
+    @SchemaMapping
+    public DataFetcherResult<UserAddress> homeAddress(UserProfile profile){
+        log.info("Resolving home address!");
+        final DataFetcherResult.Builder<UserAddress> dataResult = new DataFetcherResult.Builder<>();
+        final UserAddress address = new UserAddress();
+        address.setAcctId(profile.getAcctId());
+        address.setAddressType(AddressType.RESIDENTIAL);
+        dataResult.data(address);
+        return dataResult.localContext(profile.getAcctId()).build();
+    }
+
 }
