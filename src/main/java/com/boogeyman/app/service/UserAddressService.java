@@ -11,10 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -51,9 +51,19 @@ public class UserAddressService {
 
     @Cacheable("user_address")
     public List<UserAddress> getUserAddress(UUID acctId){
-
-
-        return new ArrayList<>();
+        return this.addressStorageService.getUserAddress(acctId).stream().map(address -> {
+           final UserAddress addr = new UserAddress();
+           addr.setStreet1(address.getStreet1());
+           addr.setStreet2(address.getStreet2());
+           addr.setCity(address.getCity());
+           addr.setState(address.getState());
+           addr.setZip(address.getZip());
+           addr.setCountry(address.getCountry());
+           addr.setAcctId(address.getAcctId());
+           addr.setAddressId(address.getAddressId());
+           addr.setAddressType(AddressType.valueOf(address.getType()));
+           return  addr;
+        }).collect(Collectors.toList());
     }
 
 

@@ -1,6 +1,7 @@
 package com.boogeyman.app.controller;
 
 import com.boogeyman.app.exceptions.RequestProcessException;
+import com.boogeyman.app.graphql.models.UserAddress;
 import com.boogeyman.app.graphql.models.types.AddressType;
 import com.boogeyman.app.model.AccountUserAddressRequest;
 import com.boogeyman.app.service.UserAccountService;
@@ -8,9 +9,11 @@ import com.boogeyman.app.service.UserAddressService;
 import com.boogeyman.app.storage.entities.AccountEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,6 +58,22 @@ public class ManagerUserAddressController {
         throw new RequestProcessException("User is missing!");
     }
 
+
+    @GetMapping("/address")
+    public ResponseEntity<List<UserAddress>> getUserAddress(Authentication auth){
+        final Optional<AccountEntity> accountEntity = userAccountService.getUserAccount(auth.getName());
+        if(accountEntity.isPresent()){
+            final UUID acctId = accountEntity.get().getAcctId();
+            final List<UserAddress> addressList = addressService.getUserAddress(acctId);
+            if(addressList == null || addressList.isEmpty()){
+                log.info("Address found for this user!");
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(addressList);
+        }
+        log.error("Unable to proceed! No user found associated to the address being retrieved!");
+        throw new RequestProcessException("User is missing!");
+    }
 
 
 
