@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -36,8 +37,7 @@ public class UserAccountService {
 
     public UUID createUserAccount(AccountUserRequest request){
 
-        final AccountEntity existUser = getUserAccount(request.getEmail());
-        if(existUser != null){
+        if(getUserAccount(request.getEmail()).isEmpty()){
             log.error("User already exist!");
             throw new UserDataExistException();
         }
@@ -65,8 +65,8 @@ public class UserAccountService {
         return acctId;
     }
 
-    public AccountEntity getUserAccount(String userName){
-        return entityStorageService.getRecordByEmail(userName);
+    public Optional<AccountEntity> getUserAccount(String userName){
+        return Optional.of(entityStorageService.getRecordByEmail(userName));
     }
 
 

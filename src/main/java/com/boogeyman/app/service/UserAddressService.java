@@ -5,6 +5,7 @@ import com.boogeyman.app.graphql.models.UserAddress;
 import com.boogeyman.app.graphql.models.types.AddressType;
 import com.boogeyman.app.model.AccountUserAddressRequest;
 import com.boogeyman.app.storage.entities.AccountUserAddressEntity;
+import com.boogeyman.app.storage.service.AccountUserAddressStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,6 +22,8 @@ import java.util.UUID;
 public class UserAddressService {
 
 
+    private final AccountUserAddressStorageService addressStorageService;
+
     public UserAddress getUserAddress(UUID acctId, AddressType type){
         final Optional<UserAddress> address = getUserAddress(acctId).stream()
                 .filter(item -> item.getAddressType().equals(type.name())).findFirst();
@@ -31,17 +34,19 @@ public class UserAddressService {
         return null;
     }
 
-    public void createAddress(UUID acctId, AccountUserAddressRequest addressRequest, AddressType type){
+    public UUID createAddress(UUID acctId, AccountUserAddressRequest addressRequest, AddressType type){
         final AccountUserAddressEntity address = new AccountUserAddressEntity();
         address.setStreet1(addressRequest.getStreet1());
         address.setStreet2(addressRequest.getStreet2());
         address.setZip(addressRequest.getZip());
         address.setCity(addressRequest.getCity());
+        address.setState(addressRequest.getState());
         address.setCountry(addressRequest.getCountry());
         address.setType(type.name());
         address.setAcctId(acctId);
-
-
+        final UUID addressId = addressStorageService.createUserAddress(address);
+        log.info("New address record with {} created!", addressId);
+        return addressId;
     }
 
     @Cacheable("user_address")
