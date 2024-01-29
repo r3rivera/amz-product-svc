@@ -21,7 +21,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/manage/users")
-public class ManagerUserAddressController {
+public class ManageUserAddressController {
 
     private final UserAddressService addressService;
     private final UserAccountService userAccountService;
