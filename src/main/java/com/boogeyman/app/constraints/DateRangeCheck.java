@@ -1,6 +1,6 @@
 package com.boogeyman.app.constraints;
 
-import com.boogeyman.app.constraints.validation.RangeCheckValidator;
+import com.boogeyman.app.constraints.validation.DateRangeCheckValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-@Constraint(validatedBy = {RangeCheckValidator.class})
-public @interface RangeCheck {
+@Constraint(validatedBy = {DateRangeCheckValidator.class})
+public @interface DateRangeCheck {
     String message() default "Start date must be before End date";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
@@ -25,6 +25,6 @@ public @interface RangeCheck {
     @Target({ ElementType.TYPE })
     @Retention(RetentionPolicy.RUNTIME)
     @interface List {
-        RangeCheck[] value();
+        DateRangeCheck[] value();
     }
 }

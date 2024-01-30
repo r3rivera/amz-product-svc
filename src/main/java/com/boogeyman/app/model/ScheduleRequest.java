@@ -1,21 +1,26 @@
 package com.boogeyman.app.model;
 
-import com.boogeyman.app.constraints.RangeCheck;
+import com.boogeyman.app.constraints.DateRangeCheck;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@RangeCheck.List({
-        @RangeCheck(
+@DateRangeCheck.List({
+        @DateRangeCheck(
                 startRange = "startDate",
                 endRange = "endDate",
-                message = "Passwords do not match!"
+                message = "startDate must be before the EndDate"
         )
 })
 public class ScheduleRequest {
+    @NotNull
     private String title;
     private String description;
     private String location;
     private boolean blocked;
+
+    @NotNull
     private String startDate;
+    @NotNull
     private String endDate;
 }
