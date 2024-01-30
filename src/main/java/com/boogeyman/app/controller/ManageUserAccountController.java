@@ -3,11 +3,11 @@ package com.boogeyman.app.controller;
 import com.boogeyman.app.model.AccountUserList;
 import com.boogeyman.app.model.AccountUserRequest;
 import com.boogeyman.app.service.UserAccountService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class ManageUserAccountController {
     private final UserAccountService userAccountService;
 
     @PostMapping("/app/user")
-    public ResponseEntity<UUID> createUser(@RequestBody @Validated AccountUserRequest request){
+    public ResponseEntity<UUID> createUser(@RequestBody @Valid AccountUserRequest request){
         final UUID acctId = this.userAccountService.createUserAccount(request);
         if(acctId != null){
             return ResponseEntity.ok(acctId);

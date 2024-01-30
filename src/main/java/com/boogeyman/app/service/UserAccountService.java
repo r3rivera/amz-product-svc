@@ -66,7 +66,12 @@ public class UserAccountService {
     }
 
     public Optional<AccountEntity> getUserAccount(String userName){
-        return Optional.of(entityStorageService.getRecordByEmail(userName));
+        final AccountEntity entity = entityStorageService.getRecordByEmail(userName);
+        if(entity != null){
+            return Optional.of(entity);
+        }
+        return Optional.empty();
+
     }
 
 
