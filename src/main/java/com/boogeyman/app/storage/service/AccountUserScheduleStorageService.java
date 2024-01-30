@@ -10,7 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,8 +21,12 @@ public class AccountUserScheduleStorageService implements BaseStorageService{
 
     private static final String CREATE_USER_SCHEDULE_STMT = "INSERT INTO APP_SCHEDULE(ACCT_ID,TITLE,DESCRIPTION,LOCATION,BLOCKED,START_DT,END_DT,CREATED_BY) " +
             "VALUES (?,?,?,?,?,?,?,?)";
-    private static final String QUERY_USER_SCHEDULE_STMT = "SELECT ACCT_ID,TITLE,DESCRIPTION,LOCATION,BLOCKED,START_DT,END_DT,CREATED_BY FROM APP_SCHEDULE " +
+    private static final String QUERY_USER_SCHEDULE_STMT = "SELECT SCHEDULE_ID, ACCT_ID,TITLE,DESCRIPTION,LOCATION,BLOCKED,START_DT,END_DT,CREATED_BY FROM APP_SCHEDULE " +
             "WHERE ACCT_ID = ?";
+    private static final String QUERY_EXISTING_SCHEDULE_BY_DATE_RANGE = "SELECT SCHEDULE_ID, ACCT_ID,TITLE,DESCRIPTION,LOCATION,BLOCKED,START_DT,END_DT,CREATED_BY FROM APP_SCHEDULE " +
+            "WHERE START_DT >= ? AND END_DT <= ?";
+    private static final String QUERY_EXISTING_SCHEDULE_BY_ACCT_ID_AND_DATE_RANGE = "SELECT SCHEDULE_ID, ACCT_ID,TITLE,DESCRIPTION,LOCATION,BLOCKED,START_DT,END_DT,CREATED_BY FROM APP_SCHEDULE " +
+            "WHERE ACCT_ID = ? AND START_DT >= ? AND END_DT <= ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -50,19 +54,37 @@ public class AccountUserScheduleStorageService implements BaseStorageService{
                         new AccountUserScheduleStorageService.AcctUserScheduleRowMapper());
     }
 
+    public List<AccountScheduleEntity> getUserScheduleByAcctIdAndDateRange(UUID acctId, LocalDateTime startDate, LocalDateTime endDate){
+        return this.jdbcTemplate
+                .query(QUERY_EXISTING_SCHEDULE_BY_ACCT_ID_AND_DATE_RANGE, ps -> {
+                    ps.setObject(1, acctId);
+                    ps.setTimestamp(2, Timestamp.valueOf(startDate));
+                    ps.setTimestamp(3, Timestamp.valueOf(endDate));
+                    },new AccountUserScheduleStorageService.AcctUserScheduleRowMapper());
+    }
+
+    public List<AccountScheduleEntity> getUserScheduleByDateRange(LocalDateTime startDate, LocalDateTime endDate){
+        return this.jdbcTemplate
+                .query(QUERY_EXISTING_SCHEDULE_BY_DATE_RANGE, ps -> {
+                    ps.setTimestamp(1, Timestamp.valueOf(startDate));
+                    ps.setTimestamp(2, Timestamp.valueOf(endDate));
+                },new AccountUserScheduleStorageService.AcctUserScheduleRowMapper());
+    }
+
     private static class AcctUserScheduleRowMapper implements RowMapper<AccountScheduleEntity> {
         @Override
         public AccountScheduleEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
             final AccountScheduleEntity entity = new AccountScheduleEntity();
-            entity.setAcctId(rs.getObject(1, UUID.class));
-            entity.setTitle(rs.getString(2));
-            entity.setDescription(rs.getString(3));
-            entity.setLocation(rs.getString(4));
-            entity.setBlocked(rs.getBoolean(5));
+            entity.setScheduleId(rs.getObject(1, UUID.class));
+            entity.setAcctId(rs.getObject(2, UUID.class));
+            entity.setTitle(rs.getString(3));
+            entity.setDescription(rs.getString(4));
+            entity.setLocation(rs.getString(5));
+            entity.setBlocked(rs.getBoolean(6));
 
-            entity.setStartDate(rs.getTimestamp(6).toLocalDateTime());
-            entity.setEndDate(rs.getTimestamp(7).toLocalDateTime());
-            entity.setCreatedBy(rs.getString(8));
+            entity.setStartDate(rs.getTimestamp(7).toLocalDateTime());
+            entity.setEndDate(rs.getTimestamp(8).toLocalDateTime());
+            entity.setCreatedBy(rs.getString(9));
             return entity;
         }
     }

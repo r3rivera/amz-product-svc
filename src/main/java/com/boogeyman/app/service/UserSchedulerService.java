@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,6 +21,7 @@ import java.util.stream.Collectors;
 public class UserSchedulerService {
 
     private final AccountUserScheduleStorageService scheduleStorageService;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DatePatternTypes.DEFAULT_DATE_TIME_PATTERN);
 
     public UUID createUserSchedule(UUID acctId, ScheduleRequest request){
         final AccountScheduleEntity entity = new AccountScheduleEntity();
@@ -38,20 +38,34 @@ public class UserSchedulerService {
 
     public List<AccountUserSchedule> getUserSchedule(UUID acctId){
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DatePatternTypes.DEFAULT_DATE_TIME_PATTERN);
-        return scheduleStorageService.getUserSchedules(acctId).stream().map(item -> {
-            final AccountUserSchedule schedule = new AccountUserSchedule();
-            schedule.setTitle(item.getTitle());
-            schedule.setDescription(item.getDescription());
-            schedule.setLocation(item.getLocation());
-            schedule.setBlocked(item.isBlocked());
-            schedule.setStartDate(item.getStartDate().format(formatter));
-            schedule.setEndDate(item.getEndDate().format(formatter));
-            return schedule;
-        }).collect(Collectors.toList());
+        return scheduleStorageService.getUserSchedules(acctId).stream()
+                .map(item -> convert(item)).collect(Collectors.toList());
+    }
+
+    public List<AccountUserSchedule> getUserScheduleByAcctIdAndDateRange(UUID acctId, LocalDateTime startDate, LocalDateTime endDate){
+        return scheduleStorageService.getUserScheduleByAcctIdAndDateRange(acctId, startDate, endDate).stream()
+                .map(item -> convert(item)).collect(Collectors.toList());
+    }
+
+    public List<AccountUserSchedule> getUserScheduleByDateRange(LocalDateTime startDate, LocalDateTime endDate){
+        return scheduleStorageService.getUserScheduleByDateRange(startDate, endDate).stream()
+                .map(item -> convert(item)).collect(Collectors.toList());
+    }
+
+
+    private AccountUserSchedule convert(AccountScheduleEntity item){
+        final AccountUserSchedule schedule = new AccountUserSchedule();
+        schedule.setScheduleId(item.getScheduleId());
+        schedule.setTitle(item.getTitle());
+        schedule.setDescription(item.getDescription());
+        schedule.setLocation(item.getLocation());
+        schedule.setBlocked(item.isBlocked());
+        schedule.setStartDate(item.getStartDate().format(formatter));
+        schedule.setEndDate(item.getEndDate().format(formatter));
+        return schedule;
     }
 
     private LocalDateTime convertStringTime(String time){
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DatePatternTypes.DEFAULT_DATE_TIME_PATTERN);
         return LocalDateTime.parse(time, formatter);
     }
 

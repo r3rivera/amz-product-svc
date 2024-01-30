@@ -7,6 +7,7 @@ import java.util.UUID;
 
 @Data
 public class AccountScheduleEntity extends BaseEntity{
+    private UUID scheduleId;
     private UUID acctId;
     private String title;
     private String description;

@@ -44,6 +44,8 @@ public class ManageScheduleController {
         return ResponseEntity.noContent().build();
     }
 
+
+
     private UUID getUserUUID(String name){
         final Optional<AccountEntity> entity = this.accountService.getUserAccount(name);
         if(entity.isPresent()){
